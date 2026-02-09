@@ -1,0 +1,52 @@
+#include <stdio.h>
+
+#define MOD 1000000007
+#define MAX_BITS 31
+
+long long power2(long long exp) {
+    long long result = 1, base = 2;
+    while (exp > 0) {
+        if (exp & 1)
+            result = (result * base) % MOD;
+        base = (base * base) % MOD;
+        exp >>= 1;
+    }
+    return result;
+}
+
+int main() {
+    int T;
+    scanf("%d", &T);
+
+    while (T--) {
+        int N;
+        scanf("%d", &N);
+
+        int arr[N];
+        for (int i = 0; i < N; i++) {
+            scanf("%d", &arr[i]);
+        }
+
+        long long answer = 0;
+
+        for (int bit = 0; bit < MAX_BITS; bit++) {
+            long long cnt = 0;
+
+            for (int i = 0; i < N; i++) {
+                if (arr[i] & (1 << bit)) {
+                    cnt++;
+                }
+            }
+
+            if (cnt > 0) {
+                long long subsets = (power2(cnt) - 1 + MOD) % MOD;
+                long long contribution = (subsets * (1LL << bit)) % MOD;
+                answer = (answer + contribution) % MOD;
+            }
+        }
+
+        printf("%lld\n", answer);
+    }
+
+    return 0;
+}
