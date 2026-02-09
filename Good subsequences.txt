@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MOD 1000000007
+
+int main() {
+    int T;
+    scanf("%d", &T);
+
+    while (T--) {
+        char S[100005];
+        scanf("%s", S);
+
+        long long freq[26] = {0};
+
+        for (int i = 0; S[i]; i++) {
+            freq[S[i] - 'a']++;
+        }
+
+        long long ans = 1;
+
+        for (int i = 0; i < 26; i++) {
+            if (freq[i] > 0) {
+                ans = (ans * freq[i]) % MOD;
+            }
+        }
+
+        printf("%lld\n", ans);
+    }
+
+    return 0;
+}
