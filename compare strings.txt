@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    int N, Q;
+    scanf("%d %d", &N, &Q);
+
+    char A[N+1], B[N+1];
+    scanf("%s", A);
+    scanf("%s", B);
+
+    int bad[N];      // bad[i] = 1 if B[i] < A[i]
+    int cntBad = 0;
+
+    for (int i = 0; i < N; i++) {
+        if (B[i] < A[i]) {
+            bad[i] = 1;
+            cntBad++;
+        } else {
+            bad[i] = 0;
+        }
+    }
+
+    for (int q = 0; q < Q; q++) {
+        int idx;
+        scanf("%d", &idx);
+        idx--; // convert 1-based to 0-based
+
+        // If B[idx] < A[idx] and B[idx] becomes '1', update
+        if (bad[idx] && A[idx] <= '1') {
+            B[idx] = '1';
+            bad[idx] = 0;
+            cntBad--;
+        } else {
+            B[idx] = '1'; // set anyway
+        }
+
+        if (cntBad == 0) {
+            printf("YES\n");
+        } else {
+            printf("NO\n");
+        }
+    }
+
+    return 0;
+}
