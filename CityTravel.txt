@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+    long long day;
+    long long limit;
+} Exception;
+
+int compare(const void *a, const void *b) {
+    return ((Exception*)a)->day - ((Exception*)b)->day;
+}
+
+int main() {
+    long long D, X;
+    int K;
+
+    scanf("%lld %lld %d", &D, &X, &K);
+
+    Exception *arr = (Exception*)malloc(K * sizeof(Exception));
+
+    for(int i = 0; i < K; i++) {
+        scanf("%lld %lld", &arr[i].day, &arr[i].limit);
+    }
+
+    // Sort exceptions by day
+    qsort(arr, K, sizeof(Exception), compare);
+
+    long long distance = 0;
+    long long currentDay = 1;
+    int i = 0;
+
+    while(distance < D) {
+
+        // If current day matches exception day
+        if(i < K && arr[i].day == currentDay) {
+            distance += arr[i].limit;
+            i++;
+        } else {
+            distance += X;
+        }
+
+        currentDay++;
+    }
+
+    printf("%lld\n", currentDay - 1);
+
+    free(arr);
+    return 0;
+}
