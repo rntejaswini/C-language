@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+int main() {
+    int t;
+    scanf("%d", &t);  // Number of test cases
+
+    while (t--) {
+        long long n, a, b, c;
+        scanf("%lld %lld %lld %lld", &n, &a, &b, &c);
+
+        long long count = 0;
+
+        for (long long day = 1; day <= n; day++) {
+            int flights = 0;
+
+            if (day % a == 0) flights++;
+            if (day % b == 0) flights++;
+            if (day % c == 0) flights++;
+
+            if (flights == 1)
+                count++;
+        }
+
+        printf("%lld\n", count);
+    }
+
+    return 0;
+}
