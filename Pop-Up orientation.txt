@@ -1,0 +1,30 @@
+#include <stdio.h>
+
+int main() {
+    int T;
+    scanf("%d", &T);
+
+    while (T--) {
+        long long x, y, l, m, a, b;
+        scanf("%lld %lld %lld %lld %lld %lld", &x, &y, &l, &m, &a, &b);
+
+        // 1. bottom-right
+        if ((a + l <= x) && (b - m >= 0)) {
+            printf("bottom-right\n");
+        }
+        // 2. bottom-left
+        else if ((a - l >= 0) && (b - m >= 0)) {
+            printf("bottom-left\n");
+        }
+        // 3. top-right
+        else if ((a + l <= x) && (b + m <= y)) {
+            printf("top-right\n");
+        }
+        // 4. top-left
+        else {
+            printf("top-left\n");
+        }
+    }
+
+    return 0;
+}
