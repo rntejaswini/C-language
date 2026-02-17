@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+// Convert Ninja number to decimal
+long long ninjaToDecimal(char *s) {
+    long long result = 0;
+    for (int i = 0; s[i]; i++) {
+        int digit;
+        if (s[i] == '9')
+            digit = 8;   // 9 in Ninja means 8
+        else
+            digit = s[i] - '0';
+        result = result * 9 + digit;
+    }
+    return result;
+}
+
+// Convert decimal to Ninja number
+void decimalToNinja(long long num) {
+    if (num == 0) {
+        printf("0");
+        return;
+    }
+
+    char result[100];
+    int index = 0;
+
+    while (num > 0) {
+        int rem = num % 9;
+        if (rem == 8)
+            result[index++] = '9';   // 8 becomes 9
+        else
+            result[index++] = rem + '0';
+        num /= 9;
+    }
+
+    for (int i = index - 1; i >= 0; i--)
+        printf("%c", result[i]);
+}
+
+int main() {
+    int T;
+    scanf("%d", &T);
+
+    while (T--) {
+        char expression[100];
+        scanf("%s", expression);
+
+        char a[50], b[50], op;
+        int i = 0, j = 0;
+
+        // Extract first number
+        while (isdigit(expression[i])) {
+            a[j++] = expression[i++];
+        }
+        a[j] = '\0';
+
+        op = expression[i++];
+
+        j = 0;
+        // Extract second number
+        while (expression[i]) {
+            b[j++] = expression[i++];
+        }
+        b[j] = '\0';
+
+        long long num1 = ninjaToDecimal(a);
+        long long num2 = ninjaToDecimal(b);
+        long long ans;
+
+        if (op == '+')
+            ans = num1 + num2;
+        else if (op == '-')
+            ans = num1 - num2;
+        else if (op == '*')
+            ans = num1 * num2;
+        else if (op == '/')
+            ans = num1 / num2;   // integer division
+
+        decimalToNinja(ans);
+        printf("\n");
+    }
+
+    return 0;
+}
