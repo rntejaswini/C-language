@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAXN 1000005
+
+int main() {
+    char S[MAXN];
+    scanf("%s", S);
+
+    int n = strlen(S);
+
+    long long result = 0;
+
+    // Arrays to store grouped characters
+    char chars[MAXN];
+    long long count[MAXN];
+    int idx = 0;
+
+    // Step 1: Compress string into groups
+    for (int i = 0; i < n; ) {
+        char current = S[i];
+        long long cnt = 0;
+
+        while (i < n && S[i] == current) {
+            cnt++;
+            i++;
+        }
+
+        chars[idx] = current;
+        count[idx] = cnt;
+        idx++;
+    }
+
+    // Step 2: Count same-character substrings
+    for (int i = 0; i < idx; i++) {
+        result += (count[i] * (count[i] + 1)) / 2;
+    }
+
+    // Step 3: Count special middle-character substrings
+    for (int i = 1; i < idx - 1; i++) {
+        if (count[i] == 1 && chars[i - 1] == chars[i + 1]) {
+            result += (count[i - 1] < count[i + 1]) ? 
+                       count[i - 1] : count[i + 1];
+        }
+    }
+
+    printf("%lld\n", result);
+
+    return 0;
+}
