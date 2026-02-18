@@ -1,0 +1,49 @@
+#include <stdio.h>
+
+#define MAXN 1000005
+
+int next[MAXN];
+
+int main() {
+    long long N, K, X;
+    scanf("%lld %lld %lld", &N, &K, &X);
+
+    // Create circular linked list
+    for (int i = 1; i <= N; i++) {
+        if (i == N)
+            next[i] = 1;
+        else
+            next[i] = i + 1;
+    }
+
+    int alive = N;
+    int current = X;
+    int prev = -1;
+
+    // Find previous of X initially
+    int temp = X;
+    while (next[temp] != X)
+        temp = next[temp];
+    prev = temp;
+
+    while (alive > 1) {
+
+        int kill = current % K;
+
+        // Kill 'kill' people
+        for (int i = 0; i < kill && alive > 1; i++) {
+            int toKill = next[current];
+
+            next[current] = next[toKill];  // remove
+            alive--;
+        }
+
+        // Move gun to next alive person
+        prev = current;
+        current = next[current];
+    }
+
+    printf("%d\n", current);
+
+    return 0;
+}
