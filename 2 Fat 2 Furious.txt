@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+long long absll(long long x) {
+    return x < 0 ? -x : x;
+}
+
+int main() {
+    int N;
+    scanf("%d", &N);
+
+    long long prev, curr;
+    long long maxDom = 0, maxBrian = 0;
+
+    // ---- DOM ----
+    scanf("%lld", &prev);
+    for(int i = 1; i < N; i++) {
+        scanf("%lld", &curr);
+        long long diff = absll(curr - prev);
+        if(diff > maxDom)
+            maxDom = diff;
+        prev = curr;
+    }
+
+    // ---- BRIAN ----
+    scanf("%lld", &prev);
+    for(int i = 1; i < N; i++) {
+        scanf("%lld", &curr);
+        long long diff = absll(curr - prev);
+        if(diff > maxBrian)
+            maxBrian = diff;
+        prev = curr;
+    }
+
+    long long finalMax;
+
+    if(maxDom > maxBrian) {
+        printf("Dom\n");
+        finalMax = maxDom;
+    }
+    else if(maxBrian > maxDom) {
+        printf("Brian\n");
+        finalMax = maxBrian;
+    }
+    else {
+        printf("Tie\n");
+        finalMax = maxDom;
+    }
+
+    printf("%lld\n", finalMax);
+
+    return 0;
+}
