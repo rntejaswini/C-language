@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAXN 2005
+
+long long arr[MAXN];
+long long results[MAXN * MAXN];
+
+int cmpfunc (const void * a, const void * b) {
+    long long x = *(long long*)a;
+    long long y = *(long long*)b;
+    if (x < y) return -1;
+    if (x > y) return 1;
+    return 0;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    for(int i = 0; i < n; i++) {
+        scanf("%lld", &arr[i]);
+    }
+
+    long long count = 0;
+
+    for(int i = 0; i < n; i++) {
+        long long current_sum = 0;
+        long long max_sum = arr[i];
+
+        for(int j = i; j < n; j++) {
+            if (j == i) {
+                current_sum = arr[j];
+                max_sum = arr[j];
+            } else {
+                if (current_sum + arr[j] > arr[j])
+                    current_sum = current_sum + arr[j];
+                else
+                    current_sum = arr[j];
+
+                if (current_sum > max_sum)
+                    max_sum = current_sum;
+            }
+            results[count++] = max_sum;
+        }
+    }
+
+    // Sort results
+    qsort(results, count, sizeof(long long), cmpfunc);
+
+    // Sum unique values
+    long long answer = 0;
+    if (count > 0) {
+        answer = results[0];
+        for(long long i = 1; i < count; i++) {
+            if(results[i] != results[i - 1]) {
+                answer += results[i];
+            }
+        }
+    }
+
+    printf("%lld\n", answer);
+
+    return 0;
+}
