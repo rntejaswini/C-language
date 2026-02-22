@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+#define MOD 1000000007
+
+int main() {
+    int M, N;
+    scanf("%d %d", &M, &N);
+
+    int capacity[M];
+    for (int i = 0; i < M; i++) {
+        scanf("%d", &capacity[i]);
+    }
+
+    long long dp[N + 1];
+
+    // Initialize dp array
+    for (int i = 0; i <= N; i++)
+        dp[i] = 0;
+
+    dp[0] = 1;  // Base case
+
+    // Coin Change (Combination)
+    for (int i = 0; i < M; i++) {
+        for (int j = capacity[i]; j <= N; j++) {
+            dp[j] = (dp[j] + dp[j - capacity[i]]) % MOD;
+        }
+    }
+
+    printf("%lld", dp[N]);
+
+    return 0;
+}
