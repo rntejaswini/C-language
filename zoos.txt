@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char str[1001];
+    scanf("%s", str);
+
+    int z_count = 0, o_count = 0;
+    int i = 0;
+
+    // Count number of 'z'
+    while (str[i] == 'z') {
+        z_count++;
+        i++;
+    }
+
+    // Count number of 'o'
+    while (str[i] == 'o') {
+        o_count++;
+        i++;
+    }
+
+    // Check if entire string was only z's followed by o's
+    if (str[i] == '\0' && o_count == 2 * z_count) {
+        printf("Yes");
+    } else {
+        printf("No");
+    }
+
+    return 0;
+}
