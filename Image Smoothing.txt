@@ -1,0 +1,58 @@
+#include <stdio.h>
+
+int main() {
+    int N, M;
+    scanf("%d %d", &N, &M);
+
+    int size = 2 * M + 1;
+
+    int F[size][size];
+    int G[N][N];
+    long long NewG[N][N];
+
+    // Read filter mask
+    for(int i = 0; i < size; i++) {
+        for(int j = 0; j < size; j++) {
+            scanf("%d", &F[i][j]);
+        }
+    }
+
+    // Read image
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < N; j++) {
+            scanf("%d", &G[i][j]);
+        }
+    }
+
+    // Perform smoothing (2D convolution with zero padding)
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < N; j++) {
+
+            long long sum = 0;
+
+            for(int x = -M; x <= M; x++) {
+                for(int y = -M; y <= M; y++) {
+
+                    int ni = i + x;
+                    int nj = j + y;
+
+                    if(ni >= 0 && ni < N && nj >= 0 && nj < N) {
+                        sum += F[x + M][y + M] * G[ni][nj];
+                    }
+                }
+            }
+
+            NewG[i][j] = sum;
+        }
+    }
+
+    // Print result
+    for(int i = 0; i < N; i++) {
+        for(int j = 0; j < N; j++) {
+            printf("%lld ", NewG[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
