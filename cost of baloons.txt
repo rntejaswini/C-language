@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+int main() {
+    int T;
+    scanf("%d", &T);
+
+    while(T--) {
+        int G, P;
+        scanf("%d %d", &G, &P);
+
+        int N;
+        scanf("%d", &N);
+
+        int problem1_count = 0;
+        int problem2_count = 0;
+
+        for(int i = 0; i < N; i++) {
+            int p1, p2;
+            scanf("%d %d", &p1, &p2);
+            if(p1 == 1) problem1_count++;
+            if(p2 == 1) problem2_count++;
+        }
+
+        long long cost1 = (long long)problem1_count * G + (long long)problem2_count * P;
+        long long cost2 = (long long)problem1_count * P + (long long)problem2_count * G;
+
+        long long minCost = (cost1 < cost2) ? cost1 : cost2;
+        printf("%lld\n", minCost);
+    }
+
+    return 0;
+}
