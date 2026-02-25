@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAXN 200005
+
+int IA[MAXN], IR[MAXN];
+int A[MAXN];
+int used[MAXN];
+
+int main() {
+    int T;
+    scanf("%d", &T);
+
+    while (T--) {
+        int n;
+        scanf("%d", &n);
+
+        for (int i = 1; i <= n; i++)
+            scanf("%d", &IA[i]);
+
+        for (int i = 1; i <= n; i++)
+            scanf("%d", &IR[i]);
+
+        int possible = 1;
+
+        // Reset used array
+        for (int i = 1; i <= n; i++)
+            used[i] = 0;
+
+        for (int i = 1; i <= n; i++) {
+            int val = n - (IA[i] + IR[n - i + 1]);
+
+            if (val < 1 || val > n || used[val]) {
+                possible = 0;
+                break;
+            }
+
+            A[i] = val;
+            used[val] = 1;
+        }
+
+        if (!possible) {
+            printf("-1\n");
+        } else {
+            for (int i = 1; i <= n; i++)
+                printf("%d ", A[i]);
+            printf("\n");
+        }
+    }
+
+    return 0;
+}
