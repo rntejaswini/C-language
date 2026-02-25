@@ -1,0 +1,32 @@
+#include <stdio.h>
+
+long long min4(long long a, long long b, long long c, long long d) {
+    long long m = a;
+    if (b < m) m = b;
+    if (c < m) m = c;
+    if (d < m) m = d;
+    return m;
+}
+
+int main() {
+    int T;
+    scanf("%d", &T);
+
+    while (T--) {
+        long long n;
+        scanf("%lld", &n);
+
+        long long c1, c2, c3, c4;
+        scanf("%lld %lld %lld %lld", &c1, &c2, &c3, &c4);
+
+        long long minCap = min4(c1, c2, c3, c4);
+
+        long long batches = (n + minCap - 1) / minCap;
+
+        long long answer = 3 + batches;
+
+        printf("%lld\n", answer);
+    }
+
+    return 0;
+}
