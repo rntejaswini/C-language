@@ -1,0 +1,56 @@
+#include <stdio.h>
+
+#define MAX 100005
+
+int arr[MAX];
+int size = 0;
+
+// Binary search to find insertion position
+int lower_bound(int x) {
+    int left = 0, right = size;
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] < x)
+            left = mid + 1;
+        else
+            right = mid;
+    }
+    return left;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++) {
+        int x;
+        scanf("%d", &x);
+
+        if (size == 0) {
+            printf("-1 -1\n");
+            arr[size++] = x;
+            continue;
+        }
+
+        int pos = lower_bound(x);
+
+        int smaller = -1, greater = -1;
+
+        if (pos > 0)
+            smaller = arr[pos - 1];
+
+        if (pos < size)
+            greater = arr[pos];
+
+        printf("%d %d\n", smaller, greater);
+
+        // Shift elements to insert x
+        for (int j = size; j > pos; j--)
+            arr[j] = arr[j - 1];
+
+        arr[pos] = x;
+        size++;
+    }
+
+    return 0;
+}
