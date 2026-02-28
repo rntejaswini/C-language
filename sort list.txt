@@ -1,0 +1,66 @@
+var sortList = function(head) {
+    if (!head || !head.next) return head;
+    
+    // Get length of list
+    let length = 0;
+    let node = head;
+    while (node) {
+        length++;
+        node = node.next;
+    }
+    
+    let dummy = new ListNode(0);
+    dummy.next = head;
+    
+    // step = size of sublists to merge
+    for (let step = 1; step < length; step *= 2) {
+        let prev = dummy;
+        let curr = dummy.next;
+        
+        while (curr) {
+            let left = curr;
+            let right = split(left, step);
+            curr = split(right, step);
+            
+            prev = merge(left, right, prev);
+        }
+    }
+    
+    return dummy.next;
+};
+
+// Split list into two parts, first part contains n nodes
+function split(head, n) {
+    for (let i = 1; head && i < n; i++) {
+        head = head.next;
+    }
+    if (!head) return null;
+    
+    let second = head.next;
+    head.next = null;
+    return second;
+}
+
+// Merge two sorted lists and connect to prev
+function merge(l1, l2, prev) {
+    let curr = prev;
+    
+    while (l1 && l2) {
+        if (l1.val < l2.val) {
+            curr.next = l1;
+            l1 = l1.next;
+        } else {
+            curr.next = l2;
+            l2 = l2.next;
+        }
+        curr = curr.next;
+    }
+    
+    curr.next = l1 ? l1 : l2;
+    
+    while (curr.next) {
+        curr = curr.next;
+    }
+    
+    return curr; // return tail
+}
