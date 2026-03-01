@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int parent[100001];
+int rankArr[100001];
+
+int find(int x) {
+    if(parent[x] != x)
+        parent[x] = find(parent[x]);  // Path compression
+    return parent[x];
+}
+
+void unionSet(int a, int b) {
+    int rootA = find(a);
+    int rootB = find(b);
+    
+    if(rootA != rootB) {
+        // Union by rank
+        if(rankArr[rootA] < rankArr[rootB]) {
+            parent[rootA] = rootB;
+        } else if(rankArr[rootA] > rankArr[rootB]) {
+            parent[rootB] = rootA;
+        } else {
+            parent[rootB] = rootA;
+            rankArr[rootA]++;
+        }
+    }
+}
+
+int main() {
+    int N, K;
+    scanf("%d", &N);
+    scanf("%d", &K);
+    
+    // Initialize DSU
+    for(int i = 1; i <= N; i++) {
+        parent[i] = i;
+        rankArr[i] = 0;
+    }
+    
+    for(int i = 0; i < K; i++) {
+        int a, b;
+        scanf("%d %d", &a, &b);
+        unionSet(a, b);
+    }
+    
+    int count = 0;
+    
+    for(int i = 1; i <= N; i++) {
+        if(find(i) == i)
+            count++;
+    }
+    
+    printf("%d\n", count);
+    
+    return 0;
+}
