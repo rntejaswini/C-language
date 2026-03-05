@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Comparator for qsort
+int compare(const void* a, const void* b) {
+    return (*(int*)a - *(int*)b);
+}
+
+int solve (int N, int* A) {
+    
+    // Sort the array
+    qsort(A, N, sizeof(int), compare);
+    
+    int left = 0;
+    int maxLength = 0;
+    
+    // Sliding window
+    for (int right = 0; right < N; right++) {
+        
+        while (A[right] - A[left] > 10) {
+            left++;
+        }
+        
+        int currentLength = right - left + 1;
+        if (currentLength > maxLength) {
+            maxLength = currentLength;
+        }
+    }
+    
+    return maxLength;
+}
+
+int main() {
+    int N;
+    scanf("%d", &N);
+    
+    int *A = (int *)malloc(sizeof(int) * N);
+    
+    for(int i = 0; i < N; i++)
+        scanf("%d", &A[i]);
+
+    int out_ = solve(N, A);
+    printf("%d", out_);
+    
+    free(A);
+    return 0;
+}
