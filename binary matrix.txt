@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+
+    int N, M;
+    scanf("%d %d", &N, &M);
+
+    char s[1005];
+    char maxRow[1005];
+
+    int index = 1;
+
+    scanf("%s", maxRow);
+
+    for(int i = 2; i <= N; i++) {
+        scanf("%s", s);
+
+        if(strcmp(s, maxRow) > 0) {
+            strcpy(maxRow, s);
+            index = i;
+        }
+    }
+
+    printf("%d\n", index);
+
+    return 0;
+}
