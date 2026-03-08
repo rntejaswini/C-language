@@ -1,0 +1,47 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+int* solution (int N, int* C, int* out_n) {
+
+    int *stack = (int*)malloc(sizeof(int)*N);
+    int top = -1;
+
+    int *result = (int*)malloc(sizeof(int)*N);
+    int count = 0;
+
+    for(int i = 0; i < N; i++) {
+
+        if(C[i] > 0) {
+            stack[++top] = C[i];   // push
+        }
+        else {
+            result[count++] = stack[top--];   // pop
+        }
+
+    }
+
+    *out_n = count;
+    return result;
+}
+
+int main() {
+
+    int out_n;
+    int N;
+
+    scanf("%d", &N);
+
+    int *C = (int *)malloc(sizeof(int)*N);
+
+    for(int i = 0; i < N; i++)
+        scanf("%d", &C[i]);
+
+    int* out_ = solution(N, C, &out_n);
+
+    for(int i = 0; i < out_n; i++) {
+        if(i) printf(" ");
+        printf("%d", out_[i]);
+    }
+
+    return 0;
+}
