@@ -1,0 +1,62 @@
+const MOD = 1000000007n;
+
+var Fancy = function() {
+    this.sequence = [];
+    this.a = 1n; // Global Multiplier
+    this.b = 0n; // Global Increment
+};
+
+/** * Fermat's Little Theorem for Modular Inverse
+ * Since MOD is prime, a^(MOD-2) % MOD is the modular inverse.
+ */
+function power(base, exp) {
+    let res = 1n;
+    base %= MOD;
+    while (exp > 0n) {
+        if (exp % 2n === 1n) res = (res * base) % MOD;
+        base = (base * base) % MOD;
+        exp /= 2n;
+    }
+    return res;
+}
+
+function modInverse(n) {
+    return power(n, MOD - 2n);
+}
+
+/** * @param {number} val
+ * @return {void}
+ */
+Fancy.prototype.append = function(val) {
+    // We want: (a * transformed_val + b) % MOD == val
+    // So: transformed_val = (val - b) * inv(a) % MOD
+    let transformedVal = (BigInt(val) - this.b + MOD) % MOD;
+    transformedVal = (transformedVal * modInverse(this.a)) % MOD;
+    this.sequence.push(transformedVal);
+};
+
+/** * @param {number} inc
+ * @return {void}
+ */
+Fancy.prototype.addAll = function(inc) {
+    this.b = (this.b + BigInt(inc)) % MOD;
+};
+
+/** * @param {number} m
+ * @return {void}
+ */
+Fancy.prototype.multAll = function(m) {
+    this.a = (this.a * BigInt(m)) % MOD;
+    this.b = (this.b * BigInt(m)) % MOD;
+};
+
+/** * @param {number} idx
+ * @return {number}
+ */
+Fancy.prototype.getIndex = function(idx) {
+    if (idx >= this.sequence.length) return -1;
+    
+    // Apply the current global transformation to the stored neutralized value
+    let res = (this.a * this.sequence[idx] + this.b) % MOD;
+    return Number(res);
+};
