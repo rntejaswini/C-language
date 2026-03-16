@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAXN 100005
+#define MAXB 31
+#define INF 1000000000
+
+int n;
+int A[MAXN];
+int head[MAXN], to[2*MAXN], next[2*MAXN], edge_cnt=0;
+
+int dp[MAXN][MAXB];
+
+void addEdge(int u,int v){
+    to[edge_cnt]=v;
+    next[edge_cnt]=head[u];
+    head[u]=edge_cnt++;
+}
+
+int min(int a,int b){
+    return a<b?a:b;
+}
+
+void dfs(int u,int parent){
+
+    for(int i=0;i<MAXB;i++)
+        dp[u][i]=i; // cost = number of shifts
+
+    for(int e=head[u];e!=-1;e=next[e]){
+        int v=to[e];
+        if(v==parent) continue;
+
+        dfs(v,u);
+
+        int newdp[MAXB];
+        for(int i=0;i<MAXB;i++) newdp[i]=INF;
+
+        for(int i=0;i<MAXB;i++){
+            int val_u = A[u] >> i;
+
+            for(int j=0;j<MAXB;j++){
+                int val_v = A[v] >> j;
+
+                if((val_u & val_v)==0){
+                    newdp[i] = min(newdp[i], dp[u][i] + dp[v][j]);
+                }
+            }
+        }
+
+        for(int i=0;i<MAXB;i++)
+            dp[u][i]=newdp[i];
+    }
+}
+
+int main(){
+
+    scanf("%d",&n);
+
+    for(int i=1;i<=n;i++)
+        scanf("%d",&A[i]);
+
+    for(int i=1;i<=n;i++)
+        head[i]=-1;
+
+    for(int i=0;i<n-1;i++){
+        int u,v;
+        scanf("%d %d",&u,&v);
+        addEdge(u,v);
+        addEdge(v,u);
+    }
+
+    dfs(1,-1);
+
+    int ans=INF;
+    for(int i=0;i<MAXB;i++)
+        ans=min(ans,dp[1][i]);
+
+    printf("%d\n",ans);
+
+    return 0;
+}
