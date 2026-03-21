@@ -1,0 +1,44 @@
+#include <stdio.h>
+
+#define MAX 2000005
+
+int primeDiv[MAX];
+
+// Sieve to count number of distinct prime divisors
+void sieve() {
+    for (int i = 2; i < MAX; i++) {
+        if (primeDiv[i] == 0) { // i is prime
+            for (int j = i; j < MAX; j += i) {
+                primeDiv[j]++;
+            }
+        }
+    }
+}
+
+int main() {
+    sieve();
+
+    int T;
+    scanf("%d", &T);
+
+    while (T--) {
+        int N, M;
+        scanf("%d %d", &N, &M);
+
+        long long sum = 0;
+
+        for (int s = 2; s <= N + M; s++) {
+            int low = (s - M > 1) ? s - M : 1;
+            int high = (s - 1 < N) ? s - 1 : N;
+
+            if (low <= high) {
+                int count = high - low + 1;
+                sum += (long long)count * primeDiv[s];
+            }
+        }
+
+        printf("%lld\n", sum);
+    }
+
+    return 0;
+}
