@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <math.h>
+
+// Function to count divisors
+int countDivisors(int x) {
+    int count = 0;
+    for (int i = 1; i * i <= x; i++) {
+        if (x % i == 0) {
+            if (i * i == x)
+                count += 1;
+            else
+                count += 2;
+        }
+    }
+    return count;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    int arr[n];
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    // Store frequencies of divisor counts
+    int freq[1001] = {0}; // safe size
+
+    for (int i = 0; i < n; i++) {
+        int d = countDivisors(arr[i]);
+        freq[d]++;
+    }
+
+    long long result = 0;
+
+    for (int i = 0; i < 1001; i++) {
+        long long f = freq[i];
+        result += (f * (f - 1)) / 2;
+    }
+
+    printf("%lld\n", result);
+
+    return 0;
+}
